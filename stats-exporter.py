@@ -8,7 +8,6 @@ import os
 import argparse
 import threading
 
-# 커맨드 라인 아규먼트 파싱
 parser = argparse.ArgumentParser(description='Linode Metrics Exporter')
 parser.add_argument('--port', type=int, default=3915, help='Port to serve on (default: 3915)')
 parser.add_argument('--path', type=str, default='/metrics', help='Path to serve metrics on (default: /metrics)')
@@ -19,7 +18,6 @@ def log_with_timestamp(message):
     print(f"[{timestamp}] {message}")
 
 
-# 여러 개의 토큰을 리스트로 저장
 linode_tokens = os.getenv("LINODE_TOKENS", "").split(",")
 
 CPU_USAGE = Gauge('linode_instance_cpu_usage', 'CPU usage of the Linode instance in percent', ['linode_id', 'linode_label'])
@@ -56,7 +54,6 @@ def fetch_instance_stats(linode_id, linode_label, headers):
     else:
         log_with_timestamp(f"Failed to fetch stats for instance {linode_label} ({linode_id}). Status code: {response.status_code}")
 
-# Prometheus 메트릭 앱 생성
 app = make_wsgi_app()
 
 def custom_wsgi_app(environ, start_response):
